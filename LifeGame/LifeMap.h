@@ -83,6 +83,26 @@ class LifeMap
 	{
 		if (!checkRange(_x, _y)) { return; }
 
+		const int aroundAliveCellCount = countAroundAliveCell(_x, _y);
+
+		if (m_map[_y][_x].isAlive())
+		{
+			if (aroundAliveCellCount == 2 || aroundAliveCellCount == 3)
+			{
+				m_map[_y][_x].setNextState(LifeState::ALIVE);
+			}
+			else
+			{
+				m_map[_y][_x].setNextState(LifeState::DEAD);
+			}
+		}
+		else
+		{
+			if (aroundAliveCellCount == 3)
+			{
+				m_map[_y][_x].setNextState(LifeState::ALIVE);
+			}
+		}
 
 	}
 
@@ -95,19 +115,26 @@ public:
 			for (int x = 0; x < m_map.size().x; x++)
 			{
 				m_map[y][x].setState(RandomSelect<LifeState>({ LifeState::ALIVE,LifeState::DEAD }));
+				m_map[y][x].setNextState(m_map[y][x].getState());
 			}
 		}
 	}
 
 	void update()
 	{
-		ClearPrint();
+		for (int y = 0; y < m_map.size().y; y++)
+		{
+			for (int x = 0; x < m_map.size().x; x++)
+			{
+				m_map[y][x].setState(m_map[y][x].getNextState());
+			}
+		}
 
 		for (int y = 0; y < m_map.size().y; y++)
 		{
 			for (int x = 0; x < m_map.size().x; x++)
 			{
-				Println(Point(x, y), L":", countAroundAliveCell(x, y));
+				applyRule(x, y);
 			}
 		}
 	}

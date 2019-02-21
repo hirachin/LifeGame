@@ -4,18 +4,22 @@
 
 void Main()
 {
-	//const Size mapSize(100, 100);
-	//const int cellLength = 2;
+	const Size mapSize(100,100);
+	const int cellLength = 4;
 
-	const Size mapSize(4, 4);
-	const int cellLength = 20;
+	//const Size mapSize(4, 4);
+	//const int cellLength = 20;
 
 
 	LifeMap lifeMap(mapSize,cellLength);
 
 	while (System::Update())
 	{
+	
 		lifeMap.update();
-		lifeMap.draw(Point(100, 100));
+
+		ClearPrint();
+		Println(Profiler::FPS(), L"fps");
+		lifeMap.draw(Point(0,0));
 	}
 }
