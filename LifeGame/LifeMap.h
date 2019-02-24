@@ -120,15 +120,12 @@ public:
 		}
 	}
 
-	void update()
+	void update(bool _enabled = true)
 	{
-		for (int y = 0; y < m_map.size().y; y++)
-		{
-			for (int x = 0; x < m_map.size().x; x++)
-			{
-				m_map[y][x].setState(m_map[y][x].getNextState());
-			}
-		}
+		if (!_enabled) { return; }
+
+		//Stopwatch timer;
+		//timer.start();
 
 		for (int y = 0; y < m_map.size().y; y++)
 		{
@@ -137,6 +134,21 @@ public:
 				applyRule(x, y);
 			}
 		}
+
+		//timer.pause();
+		//Println(L"apply:", timer.ms(), L"ms");
+		//timer.restart();
+
+		for (int y = 0; y < m_map.size().y; y++)
+		{
+			for (int x = 0; x < m_map.size().x; x++)
+			{
+				m_map[y][x].setState(m_map[y][x].getNextState());
+			}
+		}
+
+		//timer.pause();
+		//Println(L"setState:", timer.ms(), L"ms");
 	}
 
 	void draw(const Point& _pos)const
@@ -145,9 +157,9 @@ public:
 		{
 			for (int x = 0; x < m_map.size().x; x++)
 			{
-				Rect(Point(x, y)*m_gridLength + _pos, Size(m_gridLength, m_gridLength)).draw(m_map[y][x].isAlive() ? Palette::Yellowgreen:Palette::Gray);
+				const Color color = m_map[y][x].isAlive() ? Palette::Yellowgreen : Palette::Gray;
+				Rect(Point(x, y)*m_gridLength + _pos, Size(m_gridLength, m_gridLength)).draw(color);
 			}
 		}
 	}
-
 };

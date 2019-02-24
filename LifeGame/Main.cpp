@@ -1,25 +1,34 @@
 ﻿
 # include <Siv3D.hpp>
 # include "LifeMap.h"
+# include "BitLifeMap.h"
+
 
 void Main()
 {
-	const Size mapSize(100,100);
-	const int cellLength = 4;
+	const int scale = 1;
+	const Size mapSize(Window::Size()/scale);
+	const int cellLength = scale;
 
-	//const Size mapSize(4, 4);
-	//const int cellLength = 20;
+	//const Size mapSize(10, 10);
+	//const int cellLength = 40;
 
 
-	LifeMap lifeMap(mapSize,cellLength);
+	BitLifeMap lifeMap(mapSize,cellLength);
+	//LifeMap lifeMap2(mapSize, cellLength);
 
+	int count = 0;
+
+	
 	while (System::Update())
 	{
-	
-		lifeMap.update();
-
 		ClearPrint();
 		Println(Profiler::FPS(), L"fps");
-		lifeMap.draw(Point(0,0));
+		Println(L"count:", count);
+
+		count++;
+		lifeMap.update2();
+		lifeMap.draw(Point(0, 0));
+		
 	}
 }
